@@ -19,7 +19,7 @@ import (
 )
 
 func main() {
-	port := flag.String("port", "8080", "Port for test HTTP server")
+	port := flag.String("port", "8000", "Port for test HTTP server")
 	flag.Parse()
 
 	swagger, err := api.GetSwagger()
