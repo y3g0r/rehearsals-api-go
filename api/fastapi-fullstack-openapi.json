@@ -5,48 +5,6 @@
     "version": "0.1.0"
   },
   "paths": {
-    "/api/v1/login/access-token": {
-      "post": {
-        "tags": [
-          "login"
-        ],
-        "summary": "Login Access Token",
-        "description": "OAuth2 compatible token login, get an access token for future requests",
-        "operationId": "login-login_access_token",
-        "requestBody": {
-          "content": {
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_login-login_access_token"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Token"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/login/test-token": {
       "post": {
         "tags": [
@@ -984,15 +942,8 @@
       "Body_login-login_access_token": {
         "properties": {
           "grant_type": {
-            "anyOf": [
-              {
-                "type": "string",
-                "pattern": "password"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "pattern": "password",
             "title": "Grant Type"
           },
           "username": {
@@ -1060,15 +1011,8 @@
             "title": "Title"
           },
           "description": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 255
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 255,
             "title": "Description"
           }
         },
@@ -1087,15 +1031,8 @@
             "title": "Title"
           },
           "description": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 255
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 255,
             "title": "Description"
           },
           "id": {
@@ -1120,28 +1057,14 @@
       "ItemUpdate": {
         "properties": {
           "title": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 255,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
             "title": "Title"
           },
           "description": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 255
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 255,
             "title": "Description"
           }
         },
@@ -1261,15 +1184,8 @@
             "default": false
           },
           "full_name": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 255
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 255,
             "title": "Full Name"
           },
           "password": {
@@ -1305,15 +1221,8 @@
             "default": false
           },
           "full_name": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 255
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 255,
             "title": "Full Name"
           },
           "id": {
@@ -1344,15 +1253,8 @@
             "title": "Password"
           },
           "full_name": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 255
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 255,
             "title": "Full Name"
           }
         },
@@ -1366,16 +1268,9 @@
       "UserUpdate": {
         "properties": {
           "email": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 255,
-                "format": "email"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 255,
+            "format": "email",
             "title": "Email"
           },
           "is_active": {
@@ -1389,28 +1284,14 @@
             "default": false
           },
           "full_name": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 255
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 255,
             "title": "Full Name"
           },
           "password": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 40,
-                "minLength": 8
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 8,
             "title": "Password"
           }
         },
@@ -1420,28 +1301,14 @@
       "UserUpdateMe": {
         "properties": {
           "full_name": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 255
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 255,
             "title": "Full Name"
           },
           "email": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 255,
-                "format": "email"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 255,
+            "format": "email",
             "title": "Email"
           }
         },
