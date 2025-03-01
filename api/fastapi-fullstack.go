@@ -7,6 +7,8 @@ import "context"
 
 type FastAPI struct{}
 
+var _ StrictServerInterface = (*FastAPI)(nil)
+
 func NewFastAPI() *FastAPI {
 	return &FastAPI{}
 }
@@ -114,5 +116,3 @@ func (f *FastAPI) UtilsTestEmail(ctx context.Context, request UtilsTestEmailRequ
 	//TODO implement me
 	panic("implement me")
 }
-
-var _ StrictServerInterface = (*FastAPI)(nil)
