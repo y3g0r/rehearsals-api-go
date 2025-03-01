@@ -38,6 +38,11 @@ func (f *FastAPI) ItemsUpdateItem(ctx context.Context, request ItemsUpdateItemRe
 	panic("implement me")
 }
 
+func (f *FastAPI) LoginLoginAccessToken(ctx context.Context, request LoginLoginAccessTokenRequestObject) (LoginLoginAccessTokenResponseObject, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (f *FastAPI) LoginTestToken(ctx context.Context, request LoginTestTokenRequestObject) (LoginTestTokenResponseObject, error) {
 	//TODO implement me
 	panic("implement me")

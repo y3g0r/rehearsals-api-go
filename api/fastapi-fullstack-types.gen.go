@@ -14,6 +14,16 @@ const (
 	OAuth2PasswordBearerScopes = "OAuth2PasswordBearer.Scopes"
 )
 
+// BodyLoginLoginAccessToken defines model for Body_login-login_access_token.
+type BodyLoginLoginAccessToken struct {
+	ClientId     *string `json:"client_id,omitempty"`
+	ClientSecret *string `json:"client_secret,omitempty"`
+	GrantType    *string `json:"grant_type,omitempty"`
+	Password     string  `json:"password"`
+	Scope        *string `json:"scope,omitempty"`
+	Username     string  `json:"username"`
+}
+
 // HTTPValidationError defines model for HTTPValidationError.
 type HTTPValidationError struct {
 	Detail *[]ValidationError `json:"detail,omitempty"`
@@ -54,6 +64,12 @@ type Message struct {
 type NewPassword struct {
 	NewPassword string `json:"new_password"`
 	Token       string `json:"token"`
+}
+
+// Token defines model for Token.
+type Token struct {
+	AccessToken string  `json:"access_token"`
+	TokenType   *string `json:"token_type,omitempty"`
 }
 
 // UpdatePassword defines model for UpdatePassword.
@@ -148,6 +164,9 @@ type ItemsCreateItemJSONRequestBody = ItemCreate
 
 // ItemsUpdateItemJSONRequestBody defines body for ItemsUpdateItem for application/json ContentType.
 type ItemsUpdateItemJSONRequestBody = ItemUpdate
+
+// LoginLoginAccessTokenFormdataRequestBody defines body for LoginLoginAccessToken for application/x-www-form-urlencoded ContentType.
+type LoginLoginAccessTokenFormdataRequestBody = BodyLoginLoginAccessToken
 
 // LoginResetPasswordJSONRequestBody defines body for LoginResetPassword for application/json ContentType.
 type LoginResetPasswordJSONRequestBody = NewPassword
