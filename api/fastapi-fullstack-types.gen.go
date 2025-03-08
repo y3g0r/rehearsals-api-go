@@ -29,6 +29,11 @@ type HTTPValidationError struct {
 	Detail *[]ValidationError `json:"detail,omitempty"`
 }
 
+// InvalidRequest defines model for InvalidRequest.
+type InvalidRequest struct {
+	Detail *string `json:"detail,omitempty"`
+}
+
 // ItemCreate defines model for ItemCreate.
 type ItemCreate struct {
 	Description *string `json:"description,omitempty"`
@@ -165,8 +170,8 @@ type ItemsCreateItemJSONRequestBody = ItemCreate
 // ItemsUpdateItemJSONRequestBody defines body for ItemsUpdateItem for application/json ContentType.
 type ItemsUpdateItemJSONRequestBody = ItemUpdate
 
-// LoginLoginAccessTokenFormdataRequestBody defines body for LoginLoginAccessToken for application/x-www-form-urlencoded ContentType.
-type LoginLoginAccessTokenFormdataRequestBody = BodyLoginLoginAccessToken
+// LoginLoginAccessTokenMultipartRequestBody defines body for LoginLoginAccessToken for multipart/form-data ContentType.
+type LoginLoginAccessTokenMultipartRequestBody = BodyLoginLoginAccessToken
 
 // LoginResetPasswordJSONRequestBody defines body for LoginResetPassword for application/json ContentType.
 type LoginResetPasswordJSONRequestBody = NewPassword

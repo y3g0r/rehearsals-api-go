@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"mime/multipart"
 	"net/http"
 	"net/url"
 	"path"
@@ -1113,7 +1114,7 @@ func (response ItemsUpdateItem422JSONResponse) VisitItemsUpdateItemResponse(w ht
 }
 
 type LoginLoginAccessTokenRequestObject struct {
-	Body *LoginLoginAccessTokenFormdataRequestBody
+	Body *multipart.Reader
 }
 
 type LoginLoginAccessTokenResponseObject interface {
@@ -1125,6 +1126,15 @@ type LoginLoginAccessToken200JSONResponse Token
 func (response LoginLoginAccessToken200JSONResponse) VisitLoginLoginAccessTokenResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type LoginLoginAccessToken400JSONResponse InvalidRequest
+
+func (response LoginLoginAccessToken400JSONResponse) VisitLoginLoginAccessTokenResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
 
 	return json.NewEncoder(w).Encode(response)
 }
@@ -1770,16 +1780,12 @@ func (sh *strictHandler) ItemsUpdateItem(w http.ResponseWriter, r *http.Request,
 func (sh *strictHandler) LoginLoginAccessToken(w http.ResponseWriter, r *http.Request) {
 	var request LoginLoginAccessTokenRequestObject
 
-	if err := r.ParseForm(); err != nil {
-		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode formdata: %w", err))
+	if reader, err := r.MultipartReader(); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode multipart body: %w", err))
 		return
+	} else {
+		request.Body = reader
 	}
-	var body LoginLoginAccessTokenFormdataRequestBody
-	if err := runtime.BindForm(&body, r.Form, nil, nil); err != nil {
-		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't bind formdata: %w", err))
-		return
-	}
-	request.Body = &body
 
 	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
 		return sh.ssi.LoginLoginAccessToken(ctx, request.(LoginLoginAccessTokenRequestObject))
@@ -2244,40 +2250,41 @@ func (sh *strictHandler) UtilsTestEmail(w http.ResponseWriter, r *http.Request, 
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

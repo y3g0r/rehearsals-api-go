@@ -3,14 +3,36 @@
 
 package api
 
-import "context"
+import (
+	"context"
+	"github.com/y3g0r/rehearsals-api-go/internal/domain"
+	"github.com/y3g0r/rehearsals-api-go/internal/service"
+	"time"
+)
 
-type FastAPI struct{}
+var tokenType = "bearer"
+
+type UserService interface {
+	CreateUser(ctx context.Context, p service.CreateUserParams) error
+	Authenticate(ctx context.Context, p service.AuthenticationParams) (domain.User, error)
+}
+
+type CryptoService interface {
+	CreateAccessToken(subject string, expiresDelta time.Duration) (string, error)
+}
+
+type FastAPI struct {
+	userService UserService
+	cryptoSvc   CryptoService
+}
 
 var _ StrictServerInterface = (*FastAPI)(nil)
 
-func NewFastAPI() *FastAPI {
-	return &FastAPI{}
+func NewFastAPI(userSvc UserService, cryptoSvc CryptoService) *FastAPI {
+	return &FastAPI{
+		userService: userSvc,
+		cryptoSvc:   cryptoSvc,
+	}
 }
 
 func (f *FastAPI) ItemsReadItems(ctx context.Context, request ItemsReadItemsRequestObject) (ItemsReadItemsResponseObject, error) {
@@ -39,8 +61,38 @@ func (f *FastAPI) ItemsUpdateItem(ctx context.Context, request ItemsUpdateItemRe
 }
 
 func (f *FastAPI) LoginLoginAccessToken(ctx context.Context, request LoginLoginAccessTokenRequestObject) (LoginLoginAccessTokenResponseObject, error) {
-	//TODO implement me
-	panic("implement me")
+	form, err2 := request.Body.ReadForm(18590499)
+	if err2 != nil {
+		detail := "Couldn't read form"
+		return LoginLoginAccessToken400JSONResponse{Detail: &detail}, nil
+	}
+
+	params := service.AuthenticationParams{
+		Username: form.Value["username"][0],
+		Password: form.Value["password"][0],
+	}
+	user, err := f.userService.Authenticate(ctx, params)
+	if err != nil {
+		detail := "Invalid username or password"
+		return LoginLoginAccessToken400JSONResponse{Detail: &detail}, nil
+	}
+
+	if !user.IsActive() {
+		detail := "User is not active"
+		return LoginLoginAccessToken400JSONResponse{Detail: &detail}, nil
+	}
+
+	accessToken, err := f.cryptoSvc.CreateAccessToken(user.ID(), 15*time.Minute)
+	if err != nil {
+		detail := "Couldn't create access token"
+		// TODO: this should be 500, but I don't know how to create one properly yet
+		return LoginLoginAccessToken400JSONResponse{Detail: &detail}, nil
+	}
+
+	return LoginLoginAccessToken200JSONResponse{
+		AccessToken: accessToken,
+		TokenType:   &tokenType,
+	}, nil
 }
 
 func (f *FastAPI) LoginTestToken(ctx context.Context, request LoginTestTokenRequestObject) (LoginTestTokenResponseObject, error) {
